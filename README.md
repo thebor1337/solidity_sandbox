@@ -1,6 +1,6 @@
 # Solidity Sandbox
 
-This repository contains examples of the implementation of various Solidity patterns and contracts with tests for learning purposes.
+This repository contains examples of the implementation of various Solidity patterns and contracts with tests. Some of the examples may be similar to OpenZeppelin implementations. If you found this repository and want to use some contract, check if there's OpenZeppelin implementation first, I can't guarantee security and gas efficiency, I do it for learning purposes.
 
 # Ready
 
