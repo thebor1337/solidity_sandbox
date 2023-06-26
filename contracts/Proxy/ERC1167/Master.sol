@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -17,9 +17,8 @@ contract MasterMyERC20 is ERC20Upgradeable, OwnableUpgradeable {
         address owner,
         string memory name, 
         string memory symbol
-    ) external {
+    ) external initializer {
         require(msg.sender == _factory, "Only factory allowed");
-        require(factory == address(0), "Already initialized");
         factory = _factory;
         _transferOwnership(owner);
         __ERC20_init(name, symbol);
