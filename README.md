@@ -8,7 +8,7 @@ Proxy contracts and patterns:
 
 * [X] ERC1167 - proxy pattern to deploy identical contracts by cloning the master contract
 * [X] Commit/Reveal pattern
-* [X] TimeLock
+* [X] TimeLock pattern
 
 # TODO
 
