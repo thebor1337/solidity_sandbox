@@ -1,0 +1,32 @@
+// bytecode: 602d8060093d393df3363d3d373d3d3d363d73<implementation>5af43d82803e903d91602b57fd5bf3
+#define macro MAIN() = takes(0) returns(0) {
+    calldatasize
+    returndatasize
+    returndatasize
+    calldatacopy
+
+    returndatasize
+    returndatasize
+    returndatasize
+    calldatasize
+    returndatasize
+    0xbebebebebebebebebebebebebebebebebebebebe // implementation address
+    gas
+    delegatecall
+
+    returndatasize
+    dup3
+    dup1
+    returndatacopy
+    swap1
+    returndatasize
+    swap2
+
+    0x2b // jump destination
+    jumpi // jump to return if delegatecall successful
+
+    revert
+    jumpdest
+
+    return
+}
