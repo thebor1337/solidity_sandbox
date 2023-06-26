@@ -1,13 +1,16 @@
-# Sample Hardhat Project
+# Solidity Sandbox
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This repository contains examples of the implementation of various Solidity patterns and contracts with tests for learning purposes.
 
-Try running some of the following tasks:
+# Ready
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
-```
+Proxy contracts and patterns:
+
+* [X] ERC1167 - proxy pattern to deploy identical contracts by cloning the master contract
+
+# TODO
+
+* [ ] UUPS proxy pattern
+* [ ] Transparent proxy pattern
+* [ ] Multisig-timelock
+* [ ] ...
