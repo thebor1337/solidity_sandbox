@@ -28,6 +28,12 @@ interface SubmitSetNumConfirmationsRequiredTransaction {
     expiresAt: number;
 }
 
+interface SubmitWithdrawTransaction {
+    to: string;
+    amount: string;
+    expiresAt: number;
+}
+
 describe("MultiSigWallet", () => {
 
     async function deploy() {
@@ -283,6 +289,46 @@ describe("MultiSigWallet", () => {
                 await wallet.connect(user1).executeTransaction(0);
 
                 expect(await wallet.numConfirmationsRequired()).to.equal(rawTx.numConfirmationsRequired);
+            });
+        });
+
+        describe("withdraw", () => {
+            let rawTx: SubmitWithdrawTransaction;
+
+            beforeEach(async () => {
+                rawTx = {
+                    to: user1.address,
+                    amount: "100",
+                    expiresAt: (await time.latest()) + time.duration.days(1),
+                }
+            });
+
+            it("should submit withdraw transaction", async () => {
+                await wallet.connect(owner1).submitWithdrawTransaction(rawTx.to, rawTx.amount, rawTx.expiresAt);
+                const tx = await wallet.transactions(0);
+
+                expect(tx.to).to.equal(wallet.address);
+                expect(tx.value).to.equal("0");
+                expect(tx.data).to.equal(wallet.interface.encodeFunctionData(
+                    "withdraw", 
+                    [0, rawTx.to, rawTx.amount])
+                );
+                expect(tx.expiresAt).to.equal(rawTx.expiresAt);
+                expect(tx.executed).to.be.false;
+                expect(tx.numConfirmations).to.equal(0);
+                expect(tx.inner).to.be.true;
+            });
+
+            it("should execute withdraw transaction", async () => {
+                await wallet.fallback({ value: 250 });
+                await wallet.connect(owner1).submitWithdrawTransaction(rawTx.to, rawTx.amount, rawTx.expiresAt);
+                await wallet.connect(owner1).confirmTransaction(0);
+                await wallet.connect(owner2).confirmTransaction(0);
+
+                await expect(wallet.executeTransaction(0)).to.changeEtherBalances(
+                    [wallet, rawTx.to],
+                    [-rawTx.amount, rawTx.amount]
+                )
             });
         });
     });
