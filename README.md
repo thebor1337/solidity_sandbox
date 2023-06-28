@@ -10,6 +10,7 @@ Proxy contracts and patterns:
 * [X] Commit/Reveal pattern
 * [X] TimeLock pattern
 * [X] MultiSigWallet (added features to manage internal parameters)
+* [X] Governance + DAO token
 
 # TODO
 
