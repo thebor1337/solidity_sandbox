@@ -11,6 +11,7 @@ Proxy contracts and patterns:
 * [X] TimeLock pattern
 * [X] MultiSigWallet (added features to manage internal parameters)
 * [X] Governance + DAO token
+* [X] ERC6551 (NFT Bound Accounts)
 
 # TODO
 

@@ -11,6 +11,11 @@ const config: HardhatUserConfig = {
         version: "0.8.19"
       },
     ],
+  },
+  networks: {
+    hardhat: {
+      chainId: 1337,
+    }
   }
 };
 
