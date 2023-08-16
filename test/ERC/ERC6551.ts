@@ -32,8 +32,6 @@ describe("ERC6551", function () {
 
         await nft.safeMint(u1.address, tokenId);
 
-        const token = await nft.tokenURI(tokenId);
-
         expect(await nft.ownerOf(tokenId)).to.equal(u1.address);
 
         const expectedAddr = await registry.account(
@@ -75,18 +73,17 @@ describe("ERC6551", function () {
             value: value
         };
 
-        const txSendEth = await u1.sendTransaction(txData);
+        await u1.sendTransaction(txData);
 
         expect(await ethers.provider.getBalance(expectedAddr)).to.eq(value);
 
-        const sendToU2 = 150;
+        const sendToU2 = 50;
 
         const txDelegateSendEth = await nftImpl.execute(
             u2.address, 
             sendToU2, 
             "0x", 
             0, 
-            { value: sendToU2}
         );
 
         await expect(txDelegateSendEth).to.changeEtherBalance(u2, sendToU2);
@@ -97,10 +94,32 @@ describe("ERC6551", function () {
                 sendToU2, 
                 "0x", 
                 0, 
-                { value: sendToU2 }
             )
         ).to.be.revertedWith("Invalid signer");
 
-        // TODO what if the owner changed?
+        await nft.transferFrom(u1.address, u2.address, tokenId);
+
+        expect(await nft.ownerOf(tokenId)).to.equal(u2.address);
+
+        const sendToU1 = 50;
+
+        await expect(
+            nftImpl.execute(
+                u1.address, 
+                sendToU2, 
+                "0x", 
+                0, 
+            )
+        ).to.be.revertedWith("Invalid signer");
+
+        const txDelegateSendEth2 = await nftImpl.connect(u2).execute(
+            u1.address,
+            sendToU1,
+            "0x",
+            0,
+        );
+
+        await expect(txDelegateSendEth2).to.changeEtherBalance(u1, sendToU1);
+        expect(await ethers.provider.getBalance(expectedAddr)).to.eq(value - sendToU2 - sendToU1);
     });
 });
