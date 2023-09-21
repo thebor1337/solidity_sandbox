@@ -32,7 +32,6 @@ contract ERC6551Registry is IERC6551Registry {
         uint256 salt,
         bytes calldata initData
     ) external returns (address) {
-        
         bytes memory code = ERC6551BytecodeLib.getCreatingCode(
             implementation, 
             chainId, 
