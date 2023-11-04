@@ -124,7 +124,6 @@ describe("Merkle Tree", function () {
 			});
 		}
 
-		// data[index].address = owner.address;
 		data[index].address = ethers.utils.arrayify(owner.address);
 		data[index].amount = ethers.utils.parseEther("3.0");
 
