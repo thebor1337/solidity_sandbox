@@ -113,24 +113,20 @@ describe("Merkle Tree", function () {
     it("Solidity tree", async () => {
         const { owner, merkleTreeContract } = await loadFixture(deploy);
 
-        const data = [
-            {
-                address: ethers.utils.randomBytes(32),
-                amount: ethers.utils.parseEther("1.0"),
-            },
-            {
-                address: ethers.utils.randomBytes(32),
-                amount: ethers.utils.parseEther("2.0"),
-            },
-            {
-                address: owner.address,
-                amount: ethers.utils.parseEther("3.0"),
-            },
-            {
-                address: ethers.utils.randomBytes(32),
-                amount: ethers.utils.parseEther("4.0"),
-            },
-        ];
+		const numLeaves = 2**4;
+        const index = 2;
+
+		let data = [];
+		for (let i = 0; i < numLeaves; i++) {
+			data.push({
+				address: ethers.utils.randomBytes(20),
+				amount: ethers.utils.parseEther("1.0"),
+			});
+		}
+
+		// data[index].address = owner.address;
+		data[index].address = ethers.utils.arrayify(owner.address);
+		data[index].amount = ethers.utils.parseEther("3.0");
 
         const hashedLeaves = data.map((leaf) => {
             return ethers.utils.solidityKeccak256(
@@ -140,7 +136,6 @@ describe("Merkle Tree", function () {
         });
 
         const tree = new MerkleTree(hashedLeaves);
-        const index = 2;
 
         expect(
             await merkleTreeContract.verify(
